@@ -1,9 +1,13 @@
+
 services:
-  llm-inference-service:
-    image: # Use your own image (that already pushed to docker hub)
+  llm-inference:
+    image: raha8rah/llm-inference-image
+    container_name: llm-inference-compose-container
     ports:
-      - # Host port 8080 maps to container port 5000
+      - "8080:5000"
     environment:
-      # Set the `METRICS_LOG_FILE` value to be `inside_compose_inference_metrics.csv`
+      - METRICS_LOG_FILE=/app/inside_compose_inference_metrics.csv
     volumes:
-      - # Mount volume to get output in you host machine in a file named `compose_inference_metrics.csv`
+      - ./compose_inference_metrics.csv:/app/inside_compose_inference_metrics.csv
+    #this will make sure the container would restart if a failure occurs
+    restart: unless-stopped
